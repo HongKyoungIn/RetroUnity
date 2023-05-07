@@ -43,5 +43,9 @@ public class BulletSpawner : MonoBehaviour {
         }
         
     }
+
+    public void Stop() {
+        enabled = false;
+    }
 }
 
