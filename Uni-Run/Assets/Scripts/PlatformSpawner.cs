@@ -19,12 +19,26 @@ public class PlatformSpawner : MonoBehaviour {
     private Vector2 poolPosition = new Vector2(0, -25); // 초반에 생성된 발판들을 화면 밖에 숨겨둘 위치
     private float lastSpawnTime; // 마지막 배치 시점
 
-
+    // 변수들을 초기화하고 사용할 발판들을 미리 생성
     void Start() {
-        // 변수들을 초기화하고 사용할 발판들을 미리 생성
+        // count만큼의 공간을 가지는 새로운 발판 배열 생성
+        platforms = new GameObject[count];
+
+        // count만큼 루프하면서 발판 생성
+        for(int i = 0; i < count; i++) {
+            // platformPrefab을 원본으로 새 발판을 poolPosition 위치에 복제 생성
+            // 생성된 발판을 platform 배열에 할당
+            platforms[i] = Instantiate(platformPrefab, poolPosition, Quaternion.identity);
+        }
+
+        // 마지막 배치 시점 초기화
+        lastSpawnTime = 0f;
+        // 다음번 배치까지의 시간 간격을 0으로 초기화
+        timeBetSpawn = 0f;
     }
 
+    // 순서를 돌아가며 주기적으로 발판을 배치
     void Update() {
-        // 순서를 돌아가며 주기적으로 발판을 배치
+        // 게임 오버 상태에서는 동작하지 않음
     }
 }
