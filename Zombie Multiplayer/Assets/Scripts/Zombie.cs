@@ -24,13 +24,10 @@ public class Zombie : LivingEntity {
 
 
     // 추적할 대상이 존재하는지 알려주는 프로퍼티
-    private bool hasTarget
-    {
-        get
-        {
+    private bool hasTarget {
+        get {
             // 추적할 대상이 존재하고, 대상이 사망하지 않았다면 true
-            if (targetEntity != null && !targetEntity.dead)
-            {
+            if (targetEntity != null && !targetEntity.dead) {
                 return true;
             }
 
@@ -67,8 +64,7 @@ public class Zombie : LivingEntity {
     
     private void Start() {
         // 호스트가 아니라면 AI의 추적 루틴을 실행하지 않음
-        if (!PhotonNetwork.IsMasterClient)
-        {
+        if (!PhotonNetwork.IsMasterClient) {
             return;
         }
 
@@ -79,8 +75,7 @@ public class Zombie : LivingEntity {
     private void Update() {
         // 호스트가 아니라면 애니메이션의 파라미터를 직접 갱신하지 않음
         // 호스트가 파라미터를 갱신하면 클라이언트들에게 자동으로 전달되기 때문.
-        if (!PhotonNetwork.IsMasterClient)
-        {
+        if (!PhotonNetwork.IsMasterClient) {
             return;
         }
 
@@ -91,16 +86,13 @@ public class Zombie : LivingEntity {
     // 주기적으로 추적할 대상의 위치를 찾아 경로를 갱신
     private IEnumerator UpdatePath() {
         // 살아있는 동안 무한 루프
-        while (!dead)
-        {
-            if (hasTarget)
-            {
+        while (!dead) {
+            if (hasTarget) {
                 // 추적 대상 존재 : 경로를 갱신하고 AI 이동을 계속 진행
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(targetEntity.transform.position);
             }
-            else
-            {
+            else {
                 // 추적 대상 없음 : AI 이동 중지
                 navMeshAgent.isStopped = true;
 
@@ -137,8 +129,7 @@ public class Zombie : LivingEntity {
     [PunRPC]
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal) {
         // 아직 사망하지 않은 경우에만 피격 효과 재생
-        if (!dead)
-        {
+        if (!dead) {
             // 공격 받은 지점과 방향으로 파티클 효과를 재생
             hitEffect.transform.position = hitPoint;
             hitEffect.transform.rotation = Quaternion.LookRotation(hitNormal);
@@ -159,8 +150,7 @@ public class Zombie : LivingEntity {
 
         // 다른 AI들을 방해하지 않도록 자신의 모든 콜라이더들을 비활성화
         Collider[] zombieColliders = GetComponents<Collider>();
-        for (int i = 0; i < zombieColliders.Length; i++)
-        {
+        for (int i = 0; i < zombieColliders.Length; i++) {
             zombieColliders[i].enabled = false;
         }
 
@@ -177,22 +167,19 @@ public class Zombie : LivingEntity {
 
     private void OnTriggerStay(Collider other) {
         // 호스트가 아니라면 공격 실행 불가
-        if (!PhotonNetwork.IsMasterClient)
-        {
+        if (!PhotonNetwork.IsMasterClient) {
             return;
         }
 
         // 자신이 사망하지 않았으며,
         // 최근 공격 시점에서 timeBetAttack 이상 시간이 지났다면 공격 가능
-        if (!dead && Time.time >= lastAttackTime + timeBetAttack)
-        {
+        if (!dead && Time.time >= lastAttackTime + timeBetAttack) {
             // 상대방으로부터 LivingEntity 타입을 가져오기 시도
             LivingEntity attackTarget
                 = other.GetComponent<LivingEntity>();
 
             // 상대방의 LivingEntity가 자신의 추적 대상이라면 공격 실행
-            if (attackTarget != null && attackTarget == targetEntity)
-            {
+            if (attackTarget != null && attackTarget == targetEntity) {
                 // 최근 공격 시간을 갱신
                 lastAttackTime = Time.time;
 

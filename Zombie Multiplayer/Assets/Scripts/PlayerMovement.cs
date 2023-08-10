@@ -20,8 +20,7 @@ public class PlayerMovement : MonoBehaviourPun {
     // FixedUpdate는 물리 갱신 주기에 맞춰 실행됨
     private void FixedUpdate() {
         // 로컬 플레이어만 직접 위치와 회전을 변경 가능
-        if (!photonView.IsMine)
-        {
+        if (!photonView.IsMine) {
             return;
         }
 
@@ -37,8 +36,7 @@ public class PlayerMovement : MonoBehaviourPun {
     // 입력값에 따라 캐릭터를 앞뒤로 움직임
     private void Move() {
         // 상대적으로 이동할 거리 계산
-        Vector3 moveDistance =
-            playerInput.move * transform.forward * moveSpeed * Time.deltaTime;
+        Vector3 moveDistance = playerInput.move * transform.forward * moveSpeed * Time.deltaTime;
         // 리지드바디를 통해 게임 오브젝트 위치 변경
         playerRigidbody.MovePosition(playerRigidbody.position + moveDistance);
     }
@@ -48,7 +46,6 @@ public class PlayerMovement : MonoBehaviourPun {
         // 상대적으로 회전할 수치 계산
         float turn = playerInput.rotate * rotateSpeed * Time.deltaTime;
         // 리지드바디를 통해 게임 오브젝트 회전 변경
-        playerRigidbody.rotation =
-            playerRigidbody.rotation * Quaternion.Euler(0, turn, 0f);
+        playerRigidbody.rotation = playerRigidbody.rotation * Quaternion.Euler(0, turn, 0f);
     }
 }

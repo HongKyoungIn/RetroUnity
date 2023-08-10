@@ -30,23 +30,28 @@ public class PlayerShooter : MonoBehaviourPun {
 
     private void Update() {
         // 로컬 플레이어만 총을 직접 사격, 탄약 UI 갱신 가능
-        if (!photonView.IsMine)
-        {
+        if (!photonView.IsMine) {
             return;
         }
 
         // 입력을 감지하고 총 발사하거나 재장전
-        if (playerInput.fire)
-        {
-            // 발사 입력 감지시 총 발사
-            gun.Fire();
+        if (playerInput.fire) {
+            // 발사 전에 남은 탄알이 없다면 재장전을 시도
+            if (gun.magAmmo == 0) {
+                if (gun.Reload()) {
+                    // 재장전 성공 시에만 재장전 애니메이션 재생
+                    playerAnimator.SetTrigger("Reload");
+                }
+            }
+            else {
+                // 발사 입력 감지 시 총 발사
+                gun.Fire();
+            }
         }
-        else if (playerInput.reload)
-        {
-            // 재장전 입력 감지시 재장전
-            if (gun.Reload())
-            {
-                // 재장전 성공시에만 재장전 애니메이션 재생
+        else if (playerInput.reload) {
+            // 재장전 입력 감지 시 재장전
+            if (gun.Reload()) {
+                // 재장전 성공 시에만 재장전 애니메이션 재생
                 playerAnimator.SetTrigger("Reload");
             }
         }

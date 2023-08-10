@@ -30,8 +30,7 @@ public class LivingEntity : MonoBehaviourPun, IDamageable {
     // 호스트에서 먼저 단독 실행되고, 호스트를 통해 다른 클라이언트들에서 일괄 실행됨
     [PunRPC]
     public virtual void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal) {
-        if (PhotonNetwork.IsMasterClient)
-        {
+        if (PhotonNetwork.IsMasterClient) {
             // 데미지만큼 체력 감소
             health -= damage;
 
@@ -43,8 +42,7 @@ public class LivingEntity : MonoBehaviourPun, IDamageable {
         }
 
         // 체력이 0 이하 && 아직 죽지 않았다면 사망 처리 실행
-        if (health <= 0 && !dead)
-        {
+        if (health <= 0 && !dead) {
             Die();
         }
     }
@@ -53,15 +51,13 @@ public class LivingEntity : MonoBehaviourPun, IDamageable {
     // 체력을 회복하는 기능
     [PunRPC]
     public virtual void RestoreHealth(float newHealth) {
-        if (dead)
-        {
+        if (dead) {
             // 이미 사망한 경우 체력을 회복할 수 없음
             return;
         }
 
         // 호스트만 체력을 직접 갱신 가능
-        if (PhotonNetwork.IsMasterClient)
-        {
+        if (PhotonNetwork.IsMasterClient) {
             // 체력 추가
             health += newHealth;
             // 서버에서 클라이언트로 동기화
@@ -74,8 +70,7 @@ public class LivingEntity : MonoBehaviourPun, IDamageable {
 
     public virtual void Die() {
         // onDeath 이벤트에 등록된 메서드가 있다면 실행
-        if (onDeath != null)
-        {
+        if (onDeath != null) {
             onDeath();
         }
 

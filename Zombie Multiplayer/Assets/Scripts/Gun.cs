@@ -34,8 +34,7 @@ public class Gun : MonoBehaviourPun, IPunObservable {
     // 주기적으로 자동 실행되는, 동기화 메서드
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         // 로컬 오브젝트라면 쓰기 부분이 실행됨
-        if (stream.IsWriting)
-        {
+        if (stream.IsWriting) {
             // 남은 탄약수를 네트워크를 통해 보내기
             stream.SendNext(ammoRemain);
             // 탄창의 탄약수를 네트워크를 통해 보내기
@@ -43,8 +42,7 @@ public class Gun : MonoBehaviourPun, IPunObservable {
             // 현재 총의 상태를 네트워크를 통해 보내기
             stream.SendNext(state);
         }
-        else
-        {
+        else {
             // 리모트 오브젝트라면 읽기 부분이 실행됨
             // 남은 탄약수를 네트워크를 통해 받기
             ammoRemain = (int) stream.ReceiveNext();
